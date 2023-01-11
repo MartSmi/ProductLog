@@ -1,39 +1,39 @@
-const { PrismaClient } = require("@prisma/client")
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function seed() {
   // Blitz everything!
-  await prisma.note.deleteMany();
-  await prisma.author.deleteMany();
+  await prisma.item.deleteMany();
 
-  const author = await prisma.author.create({
+  await prisma.item.create({
     data: {
-      username: 'neohed'
+      name: "Def",
+      EAN: "87654321",
+      artNumber: "7482",
+      quantity: 2,
     },
   });
 
-  await prisma.note.create({
+  await prisma.item.create({
     data: {
-      title: 'A New Note',
-      content: 'This note is retrieved from the database!',
-      authorId: author.id,
-      lang: 'en',
-      isLive: true,
-      category: '',
+      name: "Abc",
+      EAN: "12345678",
+      artNumber: "9101",
+      quantity: 3,
     },
   });
 
-  console.log(`Database has been seeded. 🌱`)
+  console.log(`Database has been seeded. 🌱`);
 }
 
 seed()
   .then(() => {
-    console.log('Prisma seed function in prisma/seed.js executed!')
+    console.log("Prisma seed function in prisma/seed.js executed!");
   })
   .catch((e) => {
     console.error(e);
-    process.exit(1)
+    process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect()
-  })
+    await prisma.$disconnect();
+  });

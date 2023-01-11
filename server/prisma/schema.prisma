@@ -7,27 +7,9 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Note {
-  id        String @id @default(cuid())
-  title     String
-  content   String
-  authorId  String
-  lang      String
-  isLive    Boolean
-  category  String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  author    Author  @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-}
-
-model Author {
-  id        String @id @default(cuid())
-  username  String @unique
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  notes    Note[]
+model Item {
+  name      String
+  EAN       String @id
+  artNumber String
+  quantity  Int
 }

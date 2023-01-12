@@ -1,60 +1,37 @@
-import React from 'react';
-import {titleFromName} from './strings';
-import './table-list.css';
+import React from "react";
+import { titleFromName } from "./strings";
+import "./table-list.css";
 
-const TableList = ({
-                     data,
-                     title,
-                     onClickHandler,
-                     idField = 'id',
-                     fieldFormatter = {},
-                   }) => {
+const TableList = ({ data, title, onClickHandler, idField = "EAN" }) => {
   if (!data || data.length === 0) {
-    return null
+    return null;
   }
   const firstRow = data[0];
-  const dataColumnNamesToRender = Object.getOwnPropertyNames(firstRow)
-    .filter(propName => propName !== idField);
+  const dataColumnNamesToRender = Object.getOwnPropertyNames(firstRow).filter(
+    (propName) => propName !== idField
+  );
 
-  const headerRow = dataColumnNamesToRender.map((propName, i) => <th
-    key={i}
-  >
-    {
-      titleFromName(propName)
-    }
-  </th>);
+  const headerRow = dataColumnNamesToRender.map((propName, i) => (
+    <th key={i}>{titleFromName(propName)}</th>
+  ));
 
   return (
     <table>
-      <caption>
-        {
-          title
-        }
-      </caption>
+      <caption>{title}</caption>
       <thead>
-      <tr>
-        {
-          headerRow
-        }
-      </tr>
+        <tr>{headerRow}</tr>
       </thead>
       <tbody>
-      {
-        data.map((dataRow, i) => <tr
-          key={i}
-          onClick={() => onClickHandler && onClickHandler(dataRow[idField])}
-        >
-          {
-            dataColumnNamesToRender.map((dataColumnName, i) => <td
-              key={i}
-            >
-              {
-                (fieldFormatter[dataColumnName] ?? (v => v))(dataRow[dataColumnName], dataRow)
-              }
-            </td>)
-          }
-        </tr>)
-      }
+        {data.map((dataRow, i) => (
+          <tr
+            key={i}
+            onClick={() => onClickHandler && onClickHandler(dataRow[idField])}
+          >
+            {dataColumnNamesToRender.map((dataColumnName, i) => (
+              <td key={i}>{dataRow[dataColumnName]}</td>
+            ))}
+          </tr>
+        ))}
       </tbody>
     </table>
   );

@@ -2,32 +2,34 @@ import React, { useState } from "react";
 import { isEmptyString, isNullOrUndefined, titleFromName } from "./strings";
 import "./form.css";
 
-const Form = ({ onSubmitHandler }) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
+const Form = ({
+  searchPhrase,
+  handleChange,
+  handleSubmit,
+  isSubmitting,
+  setIsSubmitting,
+}) => {
   return (
     <form
       onSubmit={(e) => {
-        setIsSubmitting(true);
-        const form = e.target;
-        const newEntity = Object.values(form).reduce((obj, field) => {
-          const { name } = field;
-
-          if (!isEmptyString(name)) {
-            obj[name] = field.value;
-          }
-
-          return obj;
-        }, {});
-        onSubmitHandler(newEntity);
-
+        if (!isEmptyString(searchPhrase)) {
+          setIsSubmitting(true);
+          handleSubmit();
+        }
         e.stopPropagation();
         e.preventDefault();
       }}
     >
-      <fieldset disabled={isSubmitting}>
-        {<input id="searchPhrase" name="searchPhrase" type="text" />}
-      </fieldset>
+      {
+        <input
+          disabled={isSubmitting}
+          id="searchPhrase"
+          name="searchPhrase"
+          type="text"
+          value={searchPhrase}
+          onChange={handleChange}
+        />
+      }
       <button type="submit" disabled={isSubmitting}>
         {isSubmitting ? "Submitting" : "Submit"}
       </button>

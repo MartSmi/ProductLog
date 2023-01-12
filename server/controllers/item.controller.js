@@ -15,6 +15,14 @@ async function getItemsFuzzy(req, res) {
   res.json({
     items,
   });
+  // setTimeout(async () => {
+  //   const searchPhrase = req.query["search"];
+  //   const items = await itemRepo.getItemsFuzzy(searchPhrase);
+
+  //   res.json({
+  //     items,
+  //   });
+  // }, 5000);
 }
 
 module.exports = {

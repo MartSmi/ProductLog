@@ -11,6 +11,7 @@ async function seed() {
       EAN: "87654321",
       artNumber: "7482",
       quantity: 2,
+      store: process.env.FIRSTNAME,
     },
   });
 
@@ -20,6 +21,7 @@ async function seed() {
       EAN: "12345678",
       artNumber: "9101",
       quantity: 3,
+      store: process.env.FIRSTNAME,
     },
   });
 

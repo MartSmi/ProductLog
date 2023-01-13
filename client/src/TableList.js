@@ -7,9 +7,7 @@ const TableList = ({ data, title, onClickHandler, idField = "EAN" }) => {
     return null;
   }
   const firstRow = data[0];
-  const dataColumnNamesToRender = Object.getOwnPropertyNames(firstRow).filter(
-    (propName) => propName !== idField
-  );
+  const dataColumnNamesToRender = Object.getOwnPropertyNames(firstRow);
 
   const headerRow = dataColumnNamesToRender.map((propName, i) => (
     <th key={i}>{titleFromName(propName)}</th>

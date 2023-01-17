@@ -1,6 +1,8 @@
 const itemRepo = require("../models/item.model");
 const sheets = require("../sheets_api/index");
 const firstAPI = require("../store_apis/first");
+const sheets = require("../sheets_api/index");
+const firstAPI = require("../store_apis/first");
 
 async function getItems(req, res) {
   const items = await noteRepo.getItems();

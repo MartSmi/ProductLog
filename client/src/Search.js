@@ -2,7 +2,6 @@ import React from "react";
 import { useState } from "react";
 import Form from "./SearchForm";
 import { getUrl } from "./useFetch";
-import { isNullOrUndefined } from "./strings";
 import TableList from "./TableList";
 
 const Search = () => {

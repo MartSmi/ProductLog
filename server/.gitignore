@@ -28,4 +28,4 @@ yarn-error.log*
 
 # DB
 prisma/migrations
-prisma/data.db*
+prisma/data.db

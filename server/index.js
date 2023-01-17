@@ -4,6 +4,7 @@ const cors = require("cors");
 const morganLogger = require("morgan");
 const bodyParser = require("body-parser");
 const initRoutes = require("./routes/index");
+const itemController = require("./controllers/item.controller");
 
 const env = process.env.NODE_ENV || "development";
 const app = express();
@@ -17,6 +18,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 initRoutes(app);
+// itemController.cacheSheetToDB().then(() => itemController.updateSheetFromDB()); //TODO
 
 app.use(function (req, res, next) {
   const error = "Here be dragons. Route not found";

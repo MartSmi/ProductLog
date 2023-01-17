@@ -1,8 +1,7 @@
 const itemRepo = require("../models/item.model");
 const sheets = require("../sheets_api/index");
 const firstAPI = require("../store_apis/first");
-const sheets = require("../sheets_api/index");
-const firstAPI = require("../store_apis/first");
+const secondAPI = require("../store_apis/second");
 
 async function getItems(req, res) {
   const items = await noteRepo.getItems();
@@ -22,7 +21,10 @@ async function getItemsFuzzy(req, res) {
     });
     return;
   }
-  const items = await firstAPI.getItems(req.query.search);
+  let items = await firstAPI.getItems(req.query.search);
+  if (items.length == 0) {
+    items = await secondAPI.getItems(req.query.search);
+  }
   res.json({ items });
 }
 

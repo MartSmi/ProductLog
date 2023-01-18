@@ -3,12 +3,14 @@ import { useState } from "react";
 import Form from "./SearchForm";
 import { getUrl } from "./useFetch";
 import TableList from "./TableList";
+import FormEditItem from "./FormEditItem";
 
 const Search = () => {
   const [searchPhrase, setSearchPhrase] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [gotResponse, setGotResponse] = useState(false);
+  const [itemClicked, setItemClicked] = useState("");
   const handleChange = (event) => {
     setSearchPhrase(event.target.value);
   };
@@ -26,6 +28,12 @@ const Search = () => {
     }
     setGotResponse(true);
     setIsSubmitting(false);
+    itemClicked(0);
+  };
+
+  const itemOnClickHandler = (item) => {
+    setItemClicked(item);
+    console.log(searchResults.find((item) => item.EAN == itemClicked));
   };
 
   return (
@@ -38,10 +46,14 @@ const Search = () => {
         setIsSubmitting={setIsSubmitting}
       />
       <div>
-        {!searchResults.length ? (
+        {itemClicked ? (
+          <FormEditItem
+            data={[searchResults.find((item) => item.EAN == itemClicked)]}
+          />
+        ) : !searchResults.length ? (
           gotResponse && <p>Found nothing</p>
         ) : (
-          <TableList data={searchResults} />
+          <TableList data={searchResults} onClickHandler={itemOnClickHandler} />
         )}
       </div>
     </div>

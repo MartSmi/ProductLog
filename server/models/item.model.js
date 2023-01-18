@@ -27,6 +27,34 @@ async function getItemsFuzzy(searchPhrase) {
     },
   });
 }
+async function createItems(items) {
+  for (const item of items) {
+    if (item.EAN) {
+      try {
+        await prisma.item.upsert({
+          where: { EAN: item.EAN },
+          update: {},
+          create: item,
+        });
+      } catch (error) {
+        throw error;
+      }
+    } else {
+      delete item.EAN;
+      try {
+        await prisma.item.upsert({
+          where: {
+            artNumber_store: { artNumber: item.artNumber, store: item.store },
+          },
+          update: {},
+          create: item,
+        });
+      } catch (error) {
+        throw error;
+      }
+    }
+  }
+}
 
 async function upsertItems(items) {
   for (const item of items) {
@@ -41,6 +69,7 @@ async function upsertItems(items) {
         throw error;
       }
     } else {
+      delete item.EAN;
       try {
         await prisma.item.findUniqueOrThrow({
           where: {
@@ -60,8 +89,8 @@ async function upsertItems(items) {
           },
         });
       } catch (e) {
-        throw e;
-        if (e instanceof NotFoundError) {
+        if (e.name != "NotFoundError") {
+          //TODO
           await prisma.item.create({
             data: {
               name: item.name,
@@ -82,5 +111,6 @@ async function upsertItems(items) {
 module.exports = {
   getItems,
   getItemsFuzzy,
+  createItems,
   upsertItems,
 };

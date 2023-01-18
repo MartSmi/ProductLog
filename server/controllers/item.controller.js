@@ -14,6 +14,7 @@ async function getItems(req, res) {
 async function getItemsFuzzy(req, res) {
   const searchPhrase = req.query["search"];
   const itemsCached = await itemRepo.getItemsFuzzy(searchPhrase);
+  itemsCached.forEach((item) => delete item.id);
 
   if (itemsCached.length != 0) {
     res.json({
@@ -22,8 +23,10 @@ async function getItemsFuzzy(req, res) {
     return;
   }
   let items = await firstAPI.getItems(req.query.search);
+  itemRepo.createItems(items);
   if (items.length == 0) {
     items = await secondAPI.getItems(req.query.search);
+    itemRepo.createItems(items);
   }
   res.json({ items });
 }

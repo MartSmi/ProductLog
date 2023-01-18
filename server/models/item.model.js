@@ -57,52 +57,54 @@ async function createItems(items) {
 }
 
 async function upsertItems(items) {
-  for (const item of items) {
-    if (item.EAN) {
-      try {
-        await prisma.item.upsert({
-          where: { EAN: item.EAN },
-          update: { quantity: item.quantity },
-          create: item,
-        });
-      } catch (error) {
-        throw error;
-      }
-    } else {
-      delete item.EAN;
-      try {
-        await prisma.item.findUniqueOrThrow({
-          where: {
-            artNumber_store: { artNumber: item.artNumber, store: item.store },
-          },
-        });
-        await prisma.item.update({
-          where: {
-            artNumber_store: { artNumber: item.artNumber, store: item.store },
-          },
+  await Promise.all(items.map((item) => upsertItems(item)));
+}
+
+async function upsertItem(item) {
+  if (item.EAN) {
+    try {
+      await prisma.item.upsert({
+        where: { EAN: item.EAN },
+        update: { quantity: item.quantity },
+        create: item,
+      });
+    } catch (error) {
+      throw error;
+    }
+  } else {
+    delete item.EAN;
+    try {
+      await prisma.item.findUniqueOrThrow({
+        where: {
+          artNumber_store: { artNumber: item.artNumber, store: item.store },
+        },
+      });
+      await prisma.item.update({
+        where: {
+          artNumber_store: { artNumber: item.artNumber, store: item.store },
+        },
+        data: {
+          quantity: item.quantity,
+          // name: item.name,
+          // artNumber: item.artNumber,
+          // store: item.store,
+          // EAN: undefined,
+        },
+      });
+    } catch (e) {
+      if (e.name != "NotFoundError") {
+        //TODO
+        await prisma.item.create({
           data: {
+            name: item.name,
+            artNumber: item.artNumber,
             quantity: item.quantity,
-            // name: item.name,
-            // artNumber: item.artNumber,
-            // store: item.store,
-            // EAN: undefined,
+            store: item.store,
+            EAN: undefined,
           },
         });
-      } catch (e) {
-        if (e.name != "NotFoundError") {
-          //TODO
-          await prisma.item.create({
-            data: {
-              name: item.name,
-              artNumber: item.artNumber,
-              quantity: item.quantity,
-              store: item.store,
-              EAN: undefined,
-            },
-          });
-        } else {
-          throw e;
-        }
+      } else {
+        throw e;
       }
     }
   }
@@ -112,5 +114,6 @@ module.exports = {
   getItems,
   getItemsFuzzy,
   createItems,
+  upsertItem,
   upsertItems,
 };

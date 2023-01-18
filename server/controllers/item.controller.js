@@ -49,6 +49,13 @@ async function cacheSheetToDB() {
   await itemRepo.upsertItems(newItems);
 }
 
+async function updateItem(req, res) {
+  const item = req.body.item;
+  await itemRepo.upsertItem(item);
+
+  res.send();
+}
+
 async function updateSheetFromDB() {
   const storeName = process.env.FIRSTNAME;
   const items = await itemRepo.getItems();
@@ -59,5 +66,6 @@ module.exports = {
   getItems,
   getItemsFuzzy,
   cacheSheetToDB,
+  updateItem,
   updateSheetFromDB,
 };

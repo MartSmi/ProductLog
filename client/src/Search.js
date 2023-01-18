@@ -1,16 +1,19 @@
 import React from "react";
 import { useState } from "react";
-import Form from "./SearchForm";
+import SearchForm from "./SearchForm";
 import { getUrl } from "./useFetch";
 import TableList from "./TableList";
 import FormEditItem from "./FormEditItem";
+import axios from "axios";
 
 const Search = () => {
   const [searchPhrase, setSearchPhrase] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [gotResponse, setGotResponse] = useState(false);
-  const [itemClicked, setItemClicked] = useState("");
+  const [itemClicked, setItemClicked] = useState(null);
+  const [isItemUpdating, setIsItemUpdating] = useState(false);
+
   const handleChange = (event) => {
     setSearchPhrase(event.target.value);
   };
@@ -28,17 +31,39 @@ const Search = () => {
     }
     setGotResponse(true);
     setIsSubmitting(false);
-    itemClicked(0);
+    setItemClicked(null);
   };
 
   const itemOnClickHandler = (item) => {
     setItemClicked(item);
-    console.log(searchResults.find((item) => item.EAN == itemClicked));
+    console.log(item);
+  };
+
+  const handleItemUpdate = (quantity) => {
+    setIsItemUpdating(true);
+    axios
+      .put(getUrl("update"), {
+        item: {
+          name: itemClicked.name,
+          EAN: itemClicked.EAN,
+          artNumber: itemClicked.artNumber,
+          store: itemClicked.store,
+          quantity,
+        },
+      })
+      .then((resp) => {
+        searchResults.forEach((item) => {
+          if (item.EAN === itemClicked.EAN) {
+            item.quantity = quantity;
+          }
+        });
+        setIsItemUpdating(false);
+      });
   };
 
   return (
     <div>
-      <Form
+      <SearchForm
         searchPhrase={searchPhrase}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
@@ -46,14 +71,19 @@ const Search = () => {
         setIsSubmitting={setIsSubmitting}
       />
       <div>
-        {itemClicked ? (
+        {itemClicked !== null ? (
           <FormEditItem
-            data={[searchResults.find((item) => item.EAN == itemClicked)]}
+            item={searchResults.find((item) => item.EAN == itemClicked.EAN)}
+            handleItemUpdate={handleItemUpdate}
+            isItemUpdating={isItemUpdating}
           />
         ) : !searchResults.length ? (
           gotResponse && <p>Found nothing</p>
         ) : (
-          <TableList data={searchResults} onClickHandler={itemOnClickHandler} />
+          <TableList
+            items={searchResults}
+            onClickHandler={itemOnClickHandler}
+          />
         )}
       </div>
     </div>

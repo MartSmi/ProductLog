@@ -1,29 +1,34 @@
 table {
-    margin: 12px;
-    border-collapse: collapse;
+  margin: 12px;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
 }
 
 th {
-    color: white;
-    padding: 8px;
-    background-color: #444;
+  color: white;
+  padding: 8px;
+  border-right: 1px solid #ccc;
+  background-color: #444;
 }
 
 td {
-    border-bottom: 1px solid #ddd;
-    padding: 12px;
+  border-bottom: 1px solid #ddd;
+  padding: 12px;
 }
 
 td a,
 td a:visited {
-    color: black;
+  color: black;
 }
 
-td:not(:last-child) {
-    border-left:1px solid #ccc;
-    border-right: 1px solid #ccc;
+/* td:not(:last-child) {
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+} */
+td {
+  border-right: 1px solid #ccc;
 }
 
 tr:nth-child(even) {
-    background-color: #f1f1f1;
+  background-color: #f1f1f1;
 }

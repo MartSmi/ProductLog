@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { isEmptyString, isNullOrUndefined, titleFromName } from "./strings";
 import "./form.css";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
-const Form = ({
+const SearchForm = ({
   searchPhrase,
   handleChange,
   handleSubmit,
@@ -10,7 +13,14 @@ const Form = ({
   setIsSubmitting,
 }) => {
   return (
-    <form
+    <Box
+      component="form"
+      sx={{
+        "& > :not(style)": { m: 1, width: "25ch" },
+        display: "flex",
+      }}
+      noValidate
+      autoComplete="off"
       onSubmit={(e) => {
         if (!isEmptyString(searchPhrase)) {
           setIsSubmitting(true);
@@ -20,21 +30,21 @@ const Form = ({
         e.preventDefault();
       }}
     >
-      {
-        <input
-          disabled={isSubmitting}
-          id="searchPhrase"
-          name="searchPhrase"
-          type="text"
-          value={searchPhrase}
-          onChange={handleChange}
-        />
-      }
-      <button type="submit" disabled={isSubmitting}>
+      <TextField
+        disabled={isSubmitting}
+        id="searchPhrase"
+        name="searchPhrase"
+        type="text"
+        value={searchPhrase}
+        onChange={handleChange}
+        label="Phrase"
+        variant="outlined"
+      />
+      <Button variant="contained" type="submit" disabled={isSubmitting}>
         {isSubmitting ? "Submitting" : "Submit"}
-      </button>
-    </form>
+      </Button>
+    </Box>
   );
 };
 
-export default Form;
+export default SearchForm;

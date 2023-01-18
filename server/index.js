@@ -21,7 +21,7 @@ initRoutes(app);
 // itemController.cacheSheetToDB().then(() => itemController.updateSheetFromDB()); //TODO
 
 app.use(function (req, res, next) {
-  const error = "Here be dragons. Route not found";
+  const error = "Route not found";
   console.info(`404 error! ${error}`);
   res.status(404).send(error);
 });

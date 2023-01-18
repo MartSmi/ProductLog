@@ -1,27 +1,27 @@
 form {
-    padding: 1em;
-    background: #f9f9f9;
-    border: 1px solid #c1c1c1;
-    margin: 2rem auto 0 auto;
-    max-width: 600px;
+  padding: 1em;
+  background: #f9f9f9;
+  border: 1px solid #c1c1c1;
+  margin: 2rem auto 0 auto;
+  max-width: 600px;
 }
 
-form button[type=submit] {
-    margin-left: 159px;
+form button[type="submit"] {
+  margin-left: 159px;
 }
 
 .input-label {
-    display: flex;
+  display: flex;
 }
 
 .input-label label {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .input-label input {
-    margin-left: 12px;
+  margin-left: 12px;
 }
-
+/* 
 @media (min-width: 400px) {
     label {
         text-align: right;
@@ -32,4 +32,4 @@ form button[type=submit] {
     button {
         flex: 3;
     }
-}
+} */

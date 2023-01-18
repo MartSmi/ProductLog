@@ -57,7 +57,7 @@ async function createItems(items) {
 }
 
 async function upsertItems(items) {
-  await Promise.all(items.map((item) => upsertItems(item)));
+  await Promise.all(items.map((item) => upsertItem(item)));
 }
 
 async function upsertItem(item) {
@@ -92,7 +92,7 @@ async function upsertItem(item) {
         },
       });
     } catch (e) {
-      if (e.name != "NotFoundError") {
+      if (e.name === "NotFoundError") {
         //TODO
         await prisma.item.create({
           data: {

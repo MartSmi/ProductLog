@@ -3,6 +3,8 @@ const sheets = require("../sheets_api/index");
 const firstAPI = require("../store_apis/first");
 const secondAPI = require("../store_apis/second");
 
+const storeNames = [process.env.FIRSTNAME, process.env.SECONDNAME];
+
 async function getItems(req, res) {
   const items = await noteRepo.getItems();
 
@@ -32,14 +34,17 @@ async function getItemsFuzzy(req, res) {
 }
 
 async function cacheSheetToDB() {
-  const items = await sheets.getAllSheetsItems();
+  const items = await sheets.getAllSheetsItems(storeNames);
   let newItems = [];
 
   await Promise.all(
     items.map(async (item) => {
       let newItem;
       if (!item.EAN) {
-        newItem = await firstAPI.getItem({ artNumber: item.artNumber });
+        if (item.store == storeNames[0])
+          newItem = await firstAPI.getItem({ artNumber: item.artNumber });
+        else if (item.store == storeNames[1])
+          newItem = await secondAPI.getItem({ artNumber: item.artNumber });
         newItem.quantity = item.quantity;
         item = newItem;
       }
@@ -56,10 +61,15 @@ async function updateItem(req, res) {
   res.send();
 }
 
-async function updateSheetFromDB() {
-  const storeName = process.env.FIRSTNAME;
-  const items = await itemRepo.getItems();
-  await sheets.overwriteSheet(items, storeName); //TODO store names
+async function updateSheetFromDB(req, res) {
+  const items = (await itemRepo.getItems()).filter(
+    (item) => item.quantity != 0
+  );
+  storeNames.forEach(async (storeName) => {
+    const storeItems = items.filter((item) => item.store === storeName);
+    await sheets.overwriteSheet(storeItems, storeName);
+  });
+  res.send();
 }
 
 module.exports = {

@@ -4,6 +4,12 @@ import SearchForm from "./SearchForm";
 import { getUrl } from "./useFetch";
 import TableList from "./TableList";
 import FormEditItem from "./FormEditItem";
+import SpeedDial from "@mui/material/SpeedDial";
+import SpeedDialAction from "@mui/material/SpeedDialAction";
+import Box from "@mui/material/Box";
+import SpeedDialIcon from "@mui/material/SpeedDialIcon";
+import UploadIcon from "@mui/icons-material/Upload";
+import DownloadIcon from "@mui/icons-material/Download";
 import axios from "axios";
 
 const Search = () => {
@@ -61,6 +67,19 @@ const Search = () => {
       });
   };
 
+  const importAction = () => {
+    axios.put(getUrl("import"));
+  };
+
+  const exportAction = () => {
+    axios.put(getUrl("export"));
+  };
+
+  const actions = [
+    { icon: <DownloadIcon />, name: "Import", onClick: importAction },
+    { icon: <UploadIcon />, name: "Export", onClick: exportAction },
+  ];
+
   return (
     <div>
       <SearchForm
@@ -86,6 +105,35 @@ const Search = () => {
           />
         )}
       </div>
+      <Box
+        sx={{
+          height: 320,
+          transform: "translateZ(0px)",
+          flexGrow: 1,
+          position: "fixed",
+          bottom: 0,
+          right: 0,
+        }}
+      >
+        <SpeedDial
+          ariaLabel="SpeedDial basic example"
+          sx={{
+            position: "fixed",
+            bottom: "5vw",
+            right: "5vh",
+          }}
+          icon={<SpeedDialIcon />}
+        >
+          {actions.map((action) => (
+            <SpeedDialAction
+              key={action.name}
+              icon={action.icon}
+              tooltipTitle={action.name}
+              onClick={action.onClick}
+            />
+          ))}
+        </SpeedDial>
+      </Box>
     </div>
   );
 };

@@ -9,8 +9,7 @@ async function getItems(searchPhrase) {
 async function getItem({ EAN, artNumber }) {
   const searchPhrase = EAN ? EAN : artNumber;
   for (let time = 50; time < 2000; time += 50) {
-    const body = await search(searchPhrase);
-    const items = parseProductListHTML(body);
+    const items = await search(searchPhrase);
     for (const item of items) {
       if (item.EAN == "") item.EAN = undefined;
       if (EAN != undefined) if (item.EAN == EAN) return item;

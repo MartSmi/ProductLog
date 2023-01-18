@@ -51,9 +51,8 @@ async function appendSheet(items) {
   });
 }
 
-async function getAllSheetsItems() {
+async function getAllSheetsItems(stores) {
   const { googleSheetsInstance, auth } = await authenticate();
-  const stores = [process.env.FIRSTNAME];
   let items = [];
   for (const store of stores) {
     const values = (
@@ -72,15 +71,14 @@ async function getAllSheetsItems() {
 function cellRangeToItemObjects(cells, store) {
   let items = [];
   cells.forEach((row) => {
-    if (row[0] && row[1] && row[2])
-      //TODO: now only supports missing EAN, add support for missing artNumber
-      items.push({
-        name: row[0],
-        artNumber: row[1],
-        EAN: row[2],
-        quantity: parseInt(row[3]),
-        store,
-      });
+    //TODO: now only supports missing EAN, add support for missing artNumber
+    items.push({
+      name: row[0],
+      artNumber: row[1],
+      EAN: row[2],
+      quantity: parseInt(row[3]),
+      store,
+    });
   });
   return items;
 }

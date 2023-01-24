@@ -8,6 +8,7 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 
 const TableList = ({ item, handleItemUpdate, isItemSubmiting }) => {
   const [canUpdate, setCanUpdate] = useState(false);
@@ -42,34 +43,47 @@ const TableList = ({ item, handleItemUpdate, isItemSubmiting }) => {
             <TableCell align="right">{item.store}</TableCell>
             <TableCell align="right">{item.quantity}</TableCell>
             <TableCell>
-              <TextField
-                id="outlined-number"
-                label="New quanity"
-                type="number"
-                value={newQuantity || 0}
-                onChange={(event) => {
-                  const value = parseInt(event.target.value);
-                  setNewQuantity(value);
-                  console.log(value + "-" + newQuantity);
-                  if (value !== item.quantity) setCanUpdate(true);
-                  else setCanUpdate(false);
+              <Box
+                component="form"
+                sx={{
+                  "& > :not(style)": { m: 1, width: "25ch" },
+                  display: "flex",
                 }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </TableCell>
-            <TableCell>
-              <Button
-                disabled={!canUpdate || isItemSubmiting}
-                onClick={() => {
+                noValidate
+                autoComplete="off"
+                onSubmit={(e) => {
                   setCanUpdate(false);
                   handleItemUpdate(newQuantity);
+                  e.stopPropagation();
+                  e.preventDefault();
                 }}
-                variant="contained"
               >
-                Update
-              </Button>
+                <TextField
+                  id="outlined-number"
+                  label="New quantity"
+                  type="number"
+                  value={newQuantity ? newQuantity.toString() : 0}
+                  onChange={(event) => {
+                    let value = parseInt(event.target.value);
+                    value = value < 0 ? 0 : value;
+                    setNewQuantity(value);
+                    console.log(value + "-" + newQuantity);
+                    if (value !== item.quantity) setCanUpdate(true);
+                    else setCanUpdate(false);
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  onSubmit={(e) => console.log(e)}
+                />
+                <Button
+                  disabled={!canUpdate || isItemSubmiting}
+                  variant="contained"
+                  type="submit"
+                >
+                  Update
+                </Button>
+              </Box>
             </TableCell>
           </TableRow>
         }

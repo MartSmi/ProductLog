@@ -31,7 +31,7 @@ function search(phrase) {
       })
       .catch((err) => {
         console.log(err);
-        reject(err);
+        // reject(err);
       });
   });
 }

@@ -28,10 +28,16 @@ function search(phrase) {
         let items = parseProductListHTML(resp.data);
         await Promise.all(
           items.map(async (item) => {
-            await axios.get(item.link).then(async (resp) => {
-              item.EAN = await getProductEANFromHTML(resp.data);
-              delete item.link;
-            });
+            await axios
+              .get(item.link)
+              .then(async (resp) => {
+                item.EAN = await getProductEANFromHTML(resp.data);
+                delete item.link;
+              })
+              .catch((err) => {
+                console.log(err);
+                // reject(err);
+              });
           })
         );
 
@@ -39,7 +45,7 @@ function search(phrase) {
       })
       .catch((err) => {
         console.log(err);
-        reject(err);
+        // reject(err);
       });
   });
 }

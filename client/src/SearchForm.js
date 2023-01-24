@@ -17,8 +17,10 @@ const SearchForm = ({
       component="form"
       sx={{
         "& > :not(style)": { m: 1, width: "25ch" },
+        m: "2rem auto 0 auto",
         display: "flex",
       }}
+      id="form"
       noValidate
       autoComplete="off"
       onSubmit={(e) => {

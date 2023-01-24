@@ -1,12 +1,12 @@
-form {
+#form {
   padding: 1em;
   background: #f9f9f9;
   border: 1px solid #c1c1c1;
-  margin: 2rem auto 0 auto;
+  /* margin: 2rem auto 0 auto; */
   max-width: 600px;
 }
 
-form button[type="submit"] {
+#form button[type="submit"] {
   margin-left: 159px;
 }
 

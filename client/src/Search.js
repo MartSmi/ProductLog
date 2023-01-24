@@ -29,15 +29,18 @@ const Search = () => {
       method: "GET",
     });
 
+    setItemClicked(null);
     if (response.ok) {
       const result = await response.json();
       const items = result["items"];
       console.log(items);
       setSearchResults(items);
+      if (items.length === 1) {
+        setItemClicked(items[0]);
+      }
     }
     setGotResponse(true);
     setIsSubmitting(false);
-    setItemClicked(null);
   };
 
   const itemOnClickHandler = (item) => {
@@ -80,6 +83,37 @@ const Search = () => {
     { icon: <UploadIcon />, name: "Export", onClick: exportAction },
   ];
 
+  function showItems() {
+    console.log(searchResults);
+    if (gotResponse) {
+      if (!searchResults.length) {
+        return <p>Found nothing</p>;
+      } else if (searchResults.length === 1) {
+        return (
+          <FormEditItem
+            item={searchResults[0]}
+            handleItemUpdate={handleItemUpdate}
+            isItemUpdating={isItemUpdating}
+          />
+        );
+      } else if (itemClicked !== null) {
+        return (
+          <FormEditItem
+            item={searchResults.find((item) => item.EAN == itemClicked.EAN)}
+            handleItemUpdate={handleItemUpdate}
+            isItemUpdating={isItemUpdating}
+          />
+        );
+      } else if (searchResults.length) {
+        return (
+          <TableList
+            items={searchResults}
+            onClickHandler={itemOnClickHandler}
+          />
+        );
+      }
+    }
+  }
   return (
     <div>
       <SearchForm
@@ -89,22 +123,7 @@ const Search = () => {
         isSubmitting={isSubmitting}
         setIsSubmitting={setIsSubmitting}
       />
-      <div>
-        {itemClicked !== null ? (
-          <FormEditItem
-            item={searchResults.find((item) => item.EAN == itemClicked.EAN)}
-            handleItemUpdate={handleItemUpdate}
-            isItemUpdating={isItemUpdating}
-          />
-        ) : !searchResults.length ? (
-          gotResponse && <p>Found nothing</p>
-        ) : (
-          <TableList
-            items={searchResults}
-            onClickHandler={itemOnClickHandler}
-          />
-        )}
-      </div>
+      <div>{showItems()}</div>
       <Box
         sx={{
           height: 320,

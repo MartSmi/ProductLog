@@ -22,13 +22,13 @@ const TableList = ({ item, handleItemUpdate, isItemSubmiting }) => {
     <Table sx={{ minWidth: 650 }} aria-label="simple table">
       <TableHead>
         <TableRow>
-          <TableCell>Name</TableCell>
-          <TableCell align="right">Art number</TableCell>
-          <TableCell align="right">EAN</TableCell>
-          <TableCell align="right">Store</TableCell>
-          <TableCell align="right">Quantity</TableCell>
-          <TableCell align="right">New quantity</TableCell>
-          <TableCell align="right"></TableCell>
+          <TableCell align="center">Name</TableCell>
+          <TableCell align="center">Art number</TableCell>
+          <TableCell align="center">EAN</TableCell>
+          <TableCell align="center">Store</TableCell>
+          <TableCell align="center">Quantity</TableCell>
+          <TableCell align="center">New quantity</TableCell>
+          <TableCell align="center"></TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -38,15 +38,15 @@ const TableList = ({ item, handleItemUpdate, isItemSubmiting }) => {
             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
           >
             <TableCell scope="row">{item.name}</TableCell>
-            <TableCell align="right">{item.artNumber}</TableCell>
-            <TableCell align="right">{item.EAN}</TableCell>
-            <TableCell align="right">{item.store}</TableCell>
-            <TableCell align="right">{item.quantity}</TableCell>
+            <TableCell align="center">{item.artNumber}</TableCell>
+            <TableCell align="center">{item.EAN}</TableCell>
+            <TableCell align="center">{item.store}</TableCell>
+            <TableCell align="center">{item.quantity}</TableCell>
             <TableCell>
               <Box
                 component="form"
                 sx={{
-                  "& > :not(style)": { m: 1, width: "25ch" },
+                  "& > :not(style)": { m: 1 },
                   display: "flex",
                 }}
                 noValidate
@@ -80,6 +80,7 @@ const TableList = ({ item, handleItemUpdate, isItemSubmiting }) => {
                   disabled={!canUpdate || isItemSubmiting}
                   variant="contained"
                   type="submit"
+                  sx={{ ml: "0 !important" }}
                 >
                   Update
                 </Button>

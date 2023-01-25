@@ -88,14 +88,6 @@ const Search = () => {
     if (gotResponse) {
       if (!searchResults.length) {
         return <p>Found nothing</p>;
-      } else if (searchResults.length === 1) {
-        return (
-          <FormEditItem
-            item={searchResults[0]}
-            handleItemUpdate={handleItemUpdate}
-            isItemUpdating={isItemUpdating}
-          />
-        );
       } else if (itemClicked !== null) {
         return (
           <FormEditItem

@@ -12,7 +12,7 @@ import Box from "@mui/material/Box";
 
 const TableList = ({ item, handleItemUpdate, isItemSubmiting }) => {
   const [canUpdate, setCanUpdate] = useState(false);
-  const [newQuantity, setNewQuantity] = useState(item.quantity);
+  const [newQuantity, setNewQuantity] = useState(item.quantity || 0);
 
   if (!item) {
     return null;
@@ -65,7 +65,7 @@ const TableList = ({ item, handleItemUpdate, isItemSubmiting }) => {
                   value={newQuantity ? newQuantity.toString() : 0}
                   onChange={(event) => {
                     let value = parseInt(event.target.value);
-                    value = value < 0 ? 0 : value;
+                    if (value < 0) value = 0;
                     setNewQuantity(value);
                     console.log(value + "-" + newQuantity);
                     if (value !== item.quantity) setCanUpdate(true);
@@ -74,7 +74,6 @@ const TableList = ({ item, handleItemUpdate, isItemSubmiting }) => {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  onSubmit={(e) => console.log(e)}
                 />
                 <Button
                   disabled={!canUpdate || isItemSubmiting}

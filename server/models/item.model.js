@@ -23,6 +23,11 @@ async function getItemsFuzzy(searchPhrase) {
             contains: searchPhrase,
           },
         },
+        {
+          store: {
+            contains: searchPhrase,
+          },
+        },
       ],
     },
   });

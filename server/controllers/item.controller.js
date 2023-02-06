@@ -2,8 +2,13 @@ const itemRepo = require("../models/item.model");
 const sheets = require("../sheets_api/index");
 const firstAPI = require("../store_apis/first");
 const secondAPI = require("../store_apis/second");
+const thirdAPI = require("../store_apis/third");
 
-const storeNames = [process.env.FIRSTNAME, process.env.SECONDNAME];
+const storeNames = [
+  process.env.FIRSTNAME,
+  process.env.SECONDNAME,
+  process.env.THIRDNAME,
+];
 
 async function getItems(req, res) {
   const items = await noteRepo.getItems();
@@ -30,6 +35,10 @@ async function getItemsFuzzy(req, res) {
     items = await secondAPI.getItems(req.query.search);
     itemRepo.createItems(items);
   }
+  if (items.length == 0) {
+    items = await thirdAPI.getItems(req.query.search);
+    itemRepo.createItems(items);
+  }
   res.json({ items });
 }
 
@@ -45,6 +54,7 @@ async function cacheSheetToDB() {
           newItem = await firstAPI.getItem({ artNumber: item.artNumber });
         else if (item.store == storeNames[1])
           newItem = await secondAPI.getItem({ artNumber: item.artNumber });
+        //TODO
         newItem.quantity = item.quantity;
         item = newItem;
       }

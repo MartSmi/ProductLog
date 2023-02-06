@@ -48,6 +48,7 @@ const TableList = ({ item, handleItemUpdate, isItemSubmiting }) => {
                 sx={{
                   "& > :not(style)": { m: 1 },
                   display: "flex",
+                  justifyContent: "center",
                 }}
                 noValidate
                 autoComplete="off"
@@ -62,10 +63,10 @@ const TableList = ({ item, handleItemUpdate, isItemSubmiting }) => {
                   id="outlined-number"
                   label="New quantity"
                   type="number"
+                  inputProps={{ min: 0, max: 99 }}
                   value={newQuantity ? newQuantity.toString() : 0}
                   onChange={(event) => {
                     let value = parseInt(event.target.value);
-                    if (value < 0) value = 0;
                     setNewQuantity(value);
                     console.log(value + "-" + newQuantity);
                     if (value !== item.quantity) setCanUpdate(true);

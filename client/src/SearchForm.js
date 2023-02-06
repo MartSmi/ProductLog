@@ -5,13 +5,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
-const SearchForm = ({
-  searchPhrase,
-  handleChange,
-  handleSubmit,
-  isSubmitting,
-  setIsSubmitting,
-}) => {
+const SearchForm = ({ handleSubmit, isSubmitting, setIsSubmitting }) => {
   return (
     <Box
       component="form"
@@ -24,9 +18,10 @@ const SearchForm = ({
       noValidate
       autoComplete="off"
       onSubmit={(e) => {
-        if (!isEmptyString(searchPhrase)) {
+        console.log();
+        if (!isEmptyString(e.target[0].value)) {
           setIsSubmitting(true);
-          handleSubmit();
+          handleSubmit(e.target[0].value);
         }
         e.stopPropagation();
         e.preventDefault();
@@ -37,8 +32,8 @@ const SearchForm = ({
         id="searchPhrase"
         name="searchPhrase"
         type="text"
-        value={searchPhrase}
-        onChange={handleChange}
+        // value={searchPhrase}
+        // onChange={handleChange}
         label="Phrase"
         variant="outlined"
       />

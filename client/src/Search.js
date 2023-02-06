@@ -13,21 +13,19 @@ import DownloadIcon from "@mui/icons-material/Download";
 import axios from "axios";
 
 const Search = () => {
-  const [searchPhrase, setSearchPhrase] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [gotResponse, setGotResponse] = useState(false);
   const [itemClicked, setItemClicked] = useState(null);
   const [isItemUpdating, setIsItemUpdating] = useState(false);
 
-  const handleChange = (event) => {
-    setSearchPhrase(event.target.value);
-  };
-
-  const handleSubmit = async () => {
-    const response = await fetch(getUrl("search?search=" + searchPhrase), {
-      method: "GET",
-    });
+  const handleSubmit = async (searchPhrase) => {
+    const response = await fetch(
+      getUrl("search?search=" + searchPhrase.trim()),
+      {
+        method: "GET",
+      }
+    );
 
     setItemClicked(null);
     if (response.ok) {
@@ -84,7 +82,6 @@ const Search = () => {
   ];
 
   function showItems() {
-    console.log(searchResults);
     if (gotResponse) {
       if (!searchResults.length) {
         return <p>Found nothing</p>;
@@ -109,8 +106,6 @@ const Search = () => {
   return (
     <div>
       <SearchForm
-        searchPhrase={searchPhrase}
-        handleChange={handleChange}
         handleSubmit={handleSubmit}
         isSubmitting={isSubmitting}
         setIsSubmitting={setIsSubmitting}

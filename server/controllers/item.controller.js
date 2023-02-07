@@ -54,7 +54,8 @@ async function cacheSheetToDB() {
           newItem = await firstAPI.getItem({ artNumber: item.artNumber });
         else if (item.store == storeNames[1])
           newItem = await secondAPI.getItem({ artNumber: item.artNumber });
-        //TODO
+        else if (item.store == storeNames[2])
+          newItem = await thirdAPI.getItem({ artNumber: item.artNumber });
         newItem.quantity = item.quantity;
         item = newItem;
       }

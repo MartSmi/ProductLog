@@ -12,6 +12,7 @@ model Item {
   name      String
   EAN       String? @unique
   artNumber String
+  img       String
   quantity  Int @default(0)
   store     String
   @@unique([artNumber, store])

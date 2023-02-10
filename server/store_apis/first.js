@@ -46,7 +46,11 @@ function parseAPI(html) {
     let item = {};
     product.childNodes.forEach((HTMLElement) => {
       const classList = HTMLElement.classList;
-      if (classList.contains("productlistdesc"))
+      if (classList.contains("productlistimg"))
+        item.img =
+          process.env.FIRSTIMG +
+          HTMLElement.childNodes[0].childNodes[0].attributes.src;
+      else if (classList.contains("productlistdesc"))
         item.name = HTMLElement.firstChild.innerHTML;
       else if (classList.contains("productlistartnr"))
         item.artNumber = HTMLElement.firstChild.innerHTML;
